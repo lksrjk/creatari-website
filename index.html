@@ -774,8 +774,7 @@
         }
       });
     }
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!reduceMotion){ setInterval(step, 3200); }
+    setInterval(step, 3200);
   })();
 
   // Scroll progress bar

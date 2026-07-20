@@ -149,6 +149,10 @@
   .btn-primary:hover{box-shadow:0 14px 30px -6px rgba(232,98,44,.55);}
   .btn-outline{border-color:var(--border);background:#fff;color:var(--brown);box-shadow:0 2px 10px rgba(74,47,28,.06);}
   .btn-outline:hover{border-color:var(--orange);color:var(--orange-dark);box-shadow:0 8px 20px -6px rgba(74,47,28,.12);}
+  .btn-dark{background:var(--brown);color:#fff;box-shadow:0 10px 24px -8px rgba(74,47,28,.35);}
+  .btn-dark:hover{background:#3a2415;}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .hero-cta .btn{padding:13px 26px;font-size:.98rem;}
   .btn-amber{
     background:linear-gradient(135deg, var(--orange-light), var(--orange-dark));color:#fff;
     box-shadow:0 10px 24px -6px rgba(201,79,31,.4);
@@ -298,23 +302,41 @@
   .cta-band .btn-outline:hover{background:#fff;color:var(--orange-dark);}
   .cta-band .btn-dark{background:var(--brown);}
 
-  .simple-form{max-width:480px;margin:0 auto;padding:64px 24px;}
-  .simple-form h2{text-align:center;color:var(--brown);font-size:1.5rem;margin-bottom:8px;}
-  .simple-form > p{text-align:center;color:var(--muted);margin-bottom:28px;}
-  .simple-form form{display:flex;flex-direction:column;gap:14px;}
-  .simple-form label{font-size:.8rem;font-weight:700;color:var(--orange-dark);}
-  .simple-form input, .simple-form select, .simple-form textarea{
+  .contact-section{padding:64px 24px;}
+  .contact-section .section-head{max-width:640px;margin:0 auto 28px;text-align:center;}
+  .contact-section .section-head h2{color:var(--brown);font-size:1.5rem;margin-bottom:8px;}
+  .contact-section .section-head p{color:var(--muted);}
+  .contact-grid{display:flex;justify-content:center;}
+  .contact-grid form.quote{max-width:640px;width:100%;}
+  .quote-wrap{max-width:640px;width:100%;margin:0 auto;}
+  form.quote{
+    background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  }
+  form.quote h4{color:var(--orange);font-size:1.4rem;margin-bottom:4px;text-align:center;}
+  form.quote p{color:var(--muted);font-size:.86rem;margin-bottom:18px;text-align:justify;text-align-last:center;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:center;}
+  .form-grid .full{grid-column:1/-1;}
+  .form-grid > div{display:flex;flex-direction:column;align-items:center;}
+  form.quote label{font-size:.8rem;font-weight:700;color:var(--orange-dark);display:block;margin-bottom:6px;text-align:center;}
+  form.quote input, form.quote select, form.quote textarea{
     width:100%;padding:11px 14px;border-radius:10px;border:1px solid #e3d7c8;
-    font-family:inherit;font-size:.9rem;background:var(--bg-alt);
+    font-family:inherit;font-size:.9rem;background:var(--bg-alt);text-align:center;
     transition:border-color .2s ease, box-shadow .2s ease;
   }
-  .simple-form input:focus, .simple-form select:focus, .simple-form textarea:focus{
+  form.quote input:focus, form.quote select:focus, form.quote textarea:focus{
     outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,98,44,.15);background:#fff;
   }
-  .simple-form textarea{resize:vertical;min-height:90px;}
-  .simple-form input[type=file]{width:min(280px,100%);padding:9px 12px;font-size:.83rem;cursor:pointer;}
-  .simple-form .file-hint{font-size:.76rem;color:#a0937f;}
-  .simple-form button{margin-top:10px;justify-content:center;}
+  form.quote textarea{resize:vertical;min-height:76px;}
+  form.quote input[type=file]{width:min(300px,100%);margin:0 auto;padding:9px 12px;font-size:.83rem;cursor:pointer;text-align:center;align-self:center;}
+  form.quote .file-hint{font-size:.76rem;color:#a0937f;margin-top:5px;display:block;text-align:center;}
+  form.quote button{margin:16px auto 0;display:flex;}
+  @media (max-width:700px){
+    .form-grid{grid-template-columns:1fr;}
+    form.quote button{width:100%;justify-content:center;}
+  }
+  @media (max-width:480px){
+    form.quote{padding:22px 18px;}
+  }
 
   footer{background:var(--brown);color:#fff;padding:40px 0 22px;text-align:center;}
   .footer-links{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;font-size:.86rem;margin-bottom:22px;}
@@ -579,53 +601,65 @@
   </div>
 </div>
 
-<div class="simple-form" id="contact">
-  <h2>Request a Quote</h2>
-  <p>Local job or agency brief — tell us what you need produced.</p>
-  <form action="https://formsubmit.co/engage@creatari.art" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_subject" value="New quote request — CNC/Laser/Vinyl/Print/Stall production page">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false">
-    <div>
-      <label for="qname">Name</label>
-      <input id="qname" name="Name" type="text" required placeholder="Your name">
+<div class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div class="quote-wrap" style="max-width:640px;width:100%;">
+      <form class="quote" id="quoteForm" action="https://formsubmit.co/engage@creatari.art" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="New quote request — CNC/Laser/Vinyl/Print/Stall production page">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <h4>Request a Quote</h4>
+        <p>Tell us a bit about your project — and attach a design or reference file if you have one.</p>
+        <div class="form-grid">
+          <div>
+            <label for="qname">Name</label>
+            <input id="qname" name="Name" type="text" required placeholder="Your name">
+          </div>
+          <div>
+            <label for="qphone">Phone</label>
+            <input id="qphone" name="Phone" type="tel" required placeholder="+91">
+          </div>
+          <div class="full">
+            <label for="qemail">Email</label>
+            <input id="qemail" name="Email" type="email" required placeholder="you@example.com">
+          </div>
+          <div class="full">
+            <label for="qservice">Service Needed</label>
+            <select id="qservice" name="Service" required>
+              <option value="" disabled selected>Select a service</option>
+              <option>Branding Management</option>
+              <option>Creative Production</option>
+              <option>Design Services</option>
+              <option>Laser Cutting &amp; CNC Routing</option>
+              <option>Printing &amp; Production</option>
+              <option>Stall Production</option>
+              <option>Others</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="qmsg">Project Details</label>
+            <textarea id="qmsg" name="Project Details" required placeholder="Tell us what you're looking for..."></textarea>
+          </div>
+          <div class="full">
+            <label for="qfile">Upload Design / Reference File (optional)</label>
+            <input id="qfile" name="attachment" type="file" accept=".jpg,.jpeg,.png,.pdf,.ai,.eps,.cdr,.zip">
+            <span class="file-hint" id="fileHint">JPG, PNG, PDF, AI, EPS, CDR or ZIP — up to 1GB. Sent straight to engage@creatari.art.</span>
+          </div>
+        </div>
+        <button class="btn btn-dark" type="submit" id="quoteSubmitBtn">Send Request</button>
+        <p id="quoteError" style="display:none;color:#c0392b;font-size:.85rem;text-align:center;margin-top:12px;">Something went wrong sending your request. Please try again, or reach us directly on WhatsApp or by phone.</p>
+      </form>
+      <div class="quote-success" id="quoteSuccess" style="display:none;text-align:center;padding:12px 0;">
+        <h4 style="color:var(--orange);font-size:1.4rem;margin-bottom:8px;">Thanks — request received!</h4>
+        <p style="color:var(--muted);font-size:.92rem;margin:0 auto 22px;max-width:440px;">We'll get back to you within 24 hours to discuss your project. Need it sooner? Reach us directly below.</p>
+        <div class="hero-cta" style="justify-content:center;margin-bottom:18px;">
+          <a class="btn btn-primary" href="https://wa.me/919633366002" target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
+          <a class="btn btn-outline" href="tel:+919633366002">📞 Call +91 96333 66002</a>
+        </div>
+        <button class="btn btn-outline" type="button" id="quoteResetBtn">Send another request</button>
+      </div>
     </div>
-    <div>
-      <label for="qphone">Phone</label>
-      <input id="qphone" name="Phone" type="tel" required placeholder="+91">
-    </div>
-    <div>
-      <label for="qemail">Email</label>
-      <input id="qemail" name="Email" type="email" required placeholder="you@example.com">
-    </div>
-    <div>
-      <label for="qagency">Agency / Company Name</label>
-      <input id="qagency" name="Agency" type="text" placeholder="Optional">
-    </div>
-    <div>
-      <label for="qservice">Service Needed</label>
-      <select id="qservice" name="Service" required>
-        <option value="" disabled selected>Select a service</option>
-        <option>CNC Cutting &amp; Routing</option>
-        <option>Laser Cutting &amp; Engraving</option>
-        <option>Vinyl Printing &amp; Cutting</option>
-        <option>Large-Format Print</option>
-        <option>Stall &amp; Exhibition Production</option>
-        <option>Creative &amp; Event Production</option>
-        <option>Something else</option>
-      </select>
-    </div>
-    <div>
-      <label for="qmsg">Project Details</label>
-      <textarea id="qmsg" name="Project Details" required placeholder="Tell us what you're looking for, and your deadline..."></textarea>
-    </div>
-    <div>
-      <label for="qfile">Upload Design / Reference File (optional)</label>
-      <input id="qfile" name="attachment" type="file" accept=".jpg,.jpeg,.png,.pdf,.ai,.eps,.cdr,.zip">
-      <span class="file-hint" id="fileHint">JPG, PNG, PDF, AI, EPS, CDR or ZIP — up to 1GB. Sent straight to engage@creatari.art.</span>
-    </div>
-    <button class="btn btn-amber" type="submit">Send Request</button>
-  </form>
+  </div>
 </div>
 
 <footer>
@@ -708,39 +742,84 @@
     items.forEach(function(el){ revealObserver.observe(el); });
   })();
 
+  // Quote form — client-side file-size check + AJAX submit with inline thank-you message
   (function(){
     var fileInput = document.getElementById('qfile');
     var hint = document.getElementById('fileHint');
-    var quoteForm = document.querySelector('.simple-form form');
-    if(!fileInput || !quoteForm) return;
-    var MAX_BYTES = 1024 * 1024 * 1024;
+    var quoteForm = document.getElementById('quoteForm');
+    var submitBtn = document.getElementById('quoteSubmitBtn');
+    var errorMsg = document.getElementById('quoteError');
+    var successBlock = document.getElementById('quoteSuccess');
+    var resetBtn = document.getElementById('quoteResetBtn');
+    if(!quoteForm) return;
+    var MAX_BYTES = 1024 * 1024 * 1024; // 1GB
     var defaultHint = hint ? hint.textContent : '';
+    var originalBtnText = submitBtn ? submitBtn.textContent : 'Send Request';
     function formatMB(bytes){ return (bytes / (1024*1024)).toFixed(1) + 'MB'; }
-    fileInput.addEventListener('change', function(){
-      if(fileInput.files && fileInput.files[0]){
-        var f = fileInput.files[0];
-        if(f.size > MAX_BYTES){
-          fileInput.value = '';
-          if(hint){
-            hint.textContent = 'That file is ' + formatMB(f.size) + ' — please choose a file under 1GB.';
-            hint.style.color = '#c0392b';
+
+    if(fileInput){
+      fileInput.addEventListener('change', function(){
+        if(fileInput.files && fileInput.files[0]){
+          var f = fileInput.files[0];
+          if(f.size > MAX_BYTES){
+            fileInput.value = '';
+            if(hint){
+              hint.textContent = 'That file is ' + formatMB(f.size) + ' — please choose a file under 1GB.';
+              hint.style.color = '#c0392b';
+            }
+          } else if(hint){
+            hint.textContent = defaultHint;
+            hint.style.color = '';
           }
-        } else if(hint){
-          hint.textContent = defaultHint;
-          hint.style.color = '';
         }
-      }
-    });
+      });
+    }
+
     quoteForm.addEventListener('submit', function(e){
-      if(fileInput.files && fileInput.files[0] && fileInput.files[0].size > MAX_BYTES){
-        e.preventDefault();
+      e.preventDefault();
+      if(errorMsg) errorMsg.style.display = 'none';
+
+      if(fileInput && fileInput.files && fileInput.files[0] && fileInput.files[0].size > MAX_BYTES){
         fileInput.value = '';
         if(hint){
           hint.textContent = 'Please choose a file under 1GB before submitting.';
           hint.style.color = '#c0392b';
         }
+        return;
       }
+
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+
+      var ajaxAction = quoteForm.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      var formData = new FormData(quoteForm);
+
+      fetch(ajaxAction, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      }).then(function(res){
+        if(!res.ok) throw new Error('Request failed');
+        return res.json();
+      }).then(function(){
+        quoteForm.style.display = 'none';
+        if(successBlock){
+          successBlock.style.display = 'block';
+          successBlock.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      }).catch(function(){
+        if(errorMsg) errorMsg.style.display = 'block';
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalBtnText; }
+      });
     });
+
+    if(resetBtn){
+      resetBtn.addEventListener('click', function(){
+        quoteForm.reset();
+        quoteForm.style.display = '';
+        if(successBlock) successBlock.style.display = 'none';
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalBtnText; }
+      });
+    }
   })();
 </script>
 

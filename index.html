@@ -614,7 +614,8 @@
     </div>
 
     <div class="contact-grid reveal">
-        <form class="quote" action="https://formsubmit.co/engage@creatari.art" method="POST" enctype="multipart/form-data">
+      <div class="quote-wrap" style="max-width:640px;width:100%;">
+        <form class="quote" id="quoteForm" action="https://formsubmit.co/engage@creatari.art" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_subject" value="New quote request — Creatari website">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
@@ -656,8 +657,19 @@
               <span class="file-hint" id="fileHint">JPG, PNG, PDF, AI, EPS, CDR or ZIP — up to 1GB. Sent straight to engage@creatari.art.</span>
             </div>
           </div>
-          <button class="btn btn-dark" type="submit">Send Request</button>
+          <button class="btn btn-dark" type="submit" id="quoteSubmitBtn">Send Request</button>
+          <p id="quoteError" style="display:none;color:#c0392b;font-size:.85rem;text-align:center;margin-top:12px;">Something went wrong sending your request. Please try again, or reach us directly on WhatsApp or by phone.</p>
         </form>
+        <div class="quote-success" id="quoteSuccess" style="display:none;text-align:center;padding:12px 0;">
+          <h4 style="color:var(--orange);font-size:1.4rem;margin-bottom:8px;">Thanks — request received!</h4>
+          <p style="color:var(--muted);font-size:.92rem;margin:0 auto 22px;max-width:440px;">We'll get back to you within 24 hours to discuss your project. Need it sooner? Reach us directly below.</p>
+          <div class="hero-cta" style="justify-content:center;margin-bottom:18px;">
+            <a class="btn btn-primary" href="https://wa.me/919633366002" target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
+            <a class="btn btn-outline" href="tel:+919633366002">📞 Call +91 96333 66002</a>
+          </div>
+          <button class="btn btn-outline" type="button" id="quoteResetBtn">Send another request</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -828,40 +840,84 @@
     items.forEach(function(el){ revealObserver.observe(el); });
   })();
 
-  // Quote form file upload — enforce a 1GB max size client-side
+  // Quote form — client-side file-size check + AJAX submit with inline thank-you message
   (function(){
     var fileInput = document.getElementById('qfile');
     var hint = document.getElementById('fileHint');
-    var quoteForm = document.querySelector('form.quote');
-    if(!fileInput || !quoteForm) return;
+    var quoteForm = document.getElementById('quoteForm');
+    var submitBtn = document.getElementById('quoteSubmitBtn');
+    var errorMsg = document.getElementById('quoteError');
+    var successBlock = document.getElementById('quoteSuccess');
+    var resetBtn = document.getElementById('quoteResetBtn');
+    if(!quoteForm) return;
     var MAX_BYTES = 1024 * 1024 * 1024; // 1GB
     var defaultHint = hint ? hint.textContent : '';
+    var originalBtnText = submitBtn ? submitBtn.textContent : 'Send Request';
     function formatMB(bytes){ return (bytes / (1024*1024)).toFixed(1) + 'MB'; }
-    fileInput.addEventListener('change', function(){
-      if(fileInput.files && fileInput.files[0]){
-        var f = fileInput.files[0];
-        if(f.size > MAX_BYTES){
-          fileInput.value = '';
-          if(hint){
-            hint.textContent = 'That file is ' + formatMB(f.size) + ' — please choose a file under 1GB.';
-            hint.style.color = '#c0392b';
+
+    if(fileInput){
+      fileInput.addEventListener('change', function(){
+        if(fileInput.files && fileInput.files[0]){
+          var f = fileInput.files[0];
+          if(f.size > MAX_BYTES){
+            fileInput.value = '';
+            if(hint){
+              hint.textContent = 'That file is ' + formatMB(f.size) + ' — please choose a file under 1GB.';
+              hint.style.color = '#c0392b';
+            }
+          } else if(hint){
+            hint.textContent = defaultHint;
+            hint.style.color = '';
           }
-        } else if(hint){
-          hint.textContent = defaultHint;
-          hint.style.color = '';
         }
-      }
-    });
+      });
+    }
+
     quoteForm.addEventListener('submit', function(e){
-      if(fileInput.files && fileInput.files[0] && fileInput.files[0].size > MAX_BYTES){
-        e.preventDefault();
+      e.preventDefault();
+      if(errorMsg) errorMsg.style.display = 'none';
+
+      if(fileInput && fileInput.files && fileInput.files[0] && fileInput.files[0].size > MAX_BYTES){
         fileInput.value = '';
         if(hint){
           hint.textContent = 'Please choose a file under 1GB before submitting.';
           hint.style.color = '#c0392b';
         }
+        return;
       }
+
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+
+      var ajaxAction = quoteForm.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      var formData = new FormData(quoteForm);
+
+      fetch(ajaxAction, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      }).then(function(res){
+        if(!res.ok) throw new Error('Request failed');
+        return res.json();
+      }).then(function(){
+        quoteForm.style.display = 'none';
+        if(successBlock){
+          successBlock.style.display = 'block';
+          successBlock.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      }).catch(function(){
+        if(errorMsg) errorMsg.style.display = 'block';
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalBtnText; }
+      });
     });
+
+    if(resetBtn){
+      resetBtn.addEventListener('click', function(){
+        quoteForm.reset();
+        quoteForm.style.display = '';
+        if(successBlock) successBlock.style.display = 'none';
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalBtnText; }
+      });
+    }
   })();
 </script>
 
